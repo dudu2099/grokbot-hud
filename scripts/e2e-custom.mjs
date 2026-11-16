@@ -470,6 +470,25 @@ async function run({ env, dataDir, files, target, startDaemon, daemonLog }) {
   const [lr, lg, lb] = (laneNow.background?.match(/[\d.]+/g) ?? []).map(Number);
   check(laneNow.shown && Math.abs(lr - 32) <= 2 && Math.abs(lg - 44) <= 2 && Math.abs(lb - 52) <= 2 && laneNow.report.color === laneNow.background, `the lane is painted in the picture’s own background color (${laneNow.background})`, laneNow);
   check(laneNow.mask.includes(`${laneNow.report.left - 12}px`) && laneNow.mask.includes(`${laneNow.report.right + 12}px`) && laneNow.mask.includes('transparent'), 'and fades out on both sides', laneNow.mask);
+  // The page is flipped now (dark poster on a light page). A picture inside a modal dialog or an open popover sits in the
+  // top layer, which the root's flip does not reach, so it must not be flipped back; a picture in the page still is.
+  const PIXEL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+  const filters = await evaluate(
+    probe,
+    `(() => { const img = (id) => Object.assign(new Image(64, 64), { id, src: ${JSON.stringify(PIXEL)} });
+      const dialog = Object.assign(document.createElement('dialog'), { id: 'viewer' }); dialog.append(img('inDialog'));
+      const pop = Object.assign(document.createElement('div'), { id: 'pop', popover: 'manual' }); pop.append(img('inPopover'));
+      document.body.append(img('inPage'), dialog, pop); dialog.showModal(); pop.showPopover();
+      const of = (id) => getComputedStyle(document.getElementById(id)).filter;
+      const out = { flipped: window.${MARK.key}.inspect().flipped, inPage: of('inPage'), inDialog: of('inDialog'), inPopover: of('inPopover') };
+      dialog.close(); const closed = of('inDialog'); for (const id of ['inPage', 'viewer', 'pop']) document.getElementById(id).remove();
+      return { ...out, inClosedDialog: closed }; })()`,
+  );
+  check(
+    filters.flipped === true && filters.inPage.includes('invert(1)') && filters.inDialog === 'none' && filters.inPopover === 'none',
+    'flipped page: a picture in the page is flipped back, a picture inside a modal dialog or an open popover is left alone',
+    filters,
+  );
   await sleep(700);
   await screenshot('standin-lane.png');
   await evaluate(probe, `(() => { const wide = Object.assign(document.createElement('div'), { id: 'wide' }); wide.style.cssText = 'width:28vw;height:60px;margin:10px 0;'; document.getElementById('column').prepend(wide); })()`);

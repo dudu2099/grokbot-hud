@@ -509,7 +509,13 @@ export function overlayApply(params, scan, mark, toRgb) {
         flipSheet = new CSSStyleSheet();
         const ours = `:root > [${mark.attr}]`;
         const media = scan.flipBack.split(',').map((part) => `${part.trim()}:not([${mark.attr}], [${mark.attr}] *)`).join(', ');
-        flipSheet.replaceSync(`:root { filter: ${scan.flipFilter} !important; --grokbot-themes-flip: ${scan.flipFilter}; } ${ours}, ${media} { filter: ${scan.flipFilter} !important; }`);
+        // A modal dialog or an open popover is drawn in the browser's top layer, which the root's filter does not reach
+        // (measured: white stays white there). Pictures inside one were never flipped, so they must not be flipped back:
+        // an image viewer would show its picture as a negative.
+        const topLayer = scan.flipBack.split(',').map((part) => `:is(:modal, :popover-open) ${part.trim()}, ${part.trim()}:is(:modal, :popover-open)`).join(', ');
+        flipSheet.replaceSync(
+          `:root { filter: ${scan.flipFilter} !important; --grokbot-themes-flip: ${scan.flipFilter}; } ${ours}, ${media} { filter: ${scan.flipFilter} !important; } ${topLayer} { filter: none !important; }`,
+        );
         document.adoptedStyleSheets = [...document.adoptedStyleSheets, flipSheet];
       } else {
         dropFlip();
