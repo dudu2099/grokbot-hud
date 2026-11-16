@@ -1,0 +1,10 @@
+{
+  "id": "rose",
+  "name": "玫瑰",
+  "wallpaper": "wallpaper.webp",
+  "thumb": "thumb.jpg",
+  "opacity": 1,
+  "appearance": "dark",
+  "accent": "#d8363f",
+  "credit": "第三方作品，画面右下角有作者签名 JesseRae；版权归原作者，不在本仓库 MIT 许可范围内，见 themes/README.md"
+}

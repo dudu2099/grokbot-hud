@@ -8,7 +8,7 @@
   <img src="./assets/readme/window.webp" width="100%" alt="套上壁纸之后的 Grok Bot 窗口：太阳系海报铺满背景，回复文字后面那一条是干净的，右上角的小圆点上有一圈红环和「100%」的徽标。">
 </p>
 
-<sub>真实窗口的截图。聊天内容和侧栏做了虚化。壁纸是使用者自己选的图，不随仓库分发。</sub>
+<sub>真实窗口的截图。聊天内容和侧栏做了虚化。壁纸是内置的「太阳系」。</sub>
 
 <table>
 <tr>
@@ -63,13 +63,15 @@ node scripts/grokbot-wallpaper.mjs apply --image "D:\图片\我喜欢的.jpg"
 不想找图的话，用内置的：
 
 ```bash
-node scripts/grokbot-wallpaper.mjs apply morning-mist
+node scripts/grokbot-wallpaper.mjs apply meadow
 ```
 
-| 远星 `far-star` | 观星者 `stargazer` | 晨雾 `morning-mist` |
+| 太阳系 `solar-system` | 草地 `meadow` | 玫瑰 `rose` |
 |---|---|---|
-| ![远星](themes/far-star/wallpaper.jpg) | ![观星者](themes/stargazer/wallpaper.jpg) | ![晨雾](themes/morning-mist/wallpaper.jpg) |
-| 深色 | 深色 | 浅色 |
+| ![太阳系](themes/solar-system/thumb.jpg) | ![草地](themes/meadow/thumb.jpg) | ![玫瑰](themes/rose/thumb.jpg) |
+| 深色 | 浅色 | 深色 |
+
+这三张是第三方作品，随工具带着当示例，版权归原作者，见文末的许可证一节。
 
 图片支持 jpg、png、webp，不超过 4 MB。原图不会被改动或删除，工具只是在自己的数据目录里留一份副本。
 
@@ -282,4 +284,6 @@ Get-Process | Where-Object { $_.Path -match 'Grok' } | Select-Object Id, Process
 
 ## 许可证
 
-[MIT](LICENSE)。三张内置壁纸是 AI 生成的原创画面，来源写在各主题的 `theme.json` 里。
+代码按 [MIT](LICENSE) 提供。
+
+`themes/` 里的三张内置壁纸不在 MIT 的范围内。它们是第三方作品，版权归各自的原作者，这里只作为壁纸示例随工具带着，来源说明在 [themes/README.md](themes/README.md)。原作者如果希望署名、换一个版本或者移除，提一个 issue，会马上处理。你要把这个工具再分发出去时，请换成你有权使用的图。
