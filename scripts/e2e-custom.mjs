@@ -494,6 +494,24 @@ async function run({ env, dataDir, files, target, startDaemon, daemonLog }) {
   await evaluate(probe, `(() => { const wide = Object.assign(document.createElement('div'), { id: 'wide' }); wide.style.cssText = 'width:28vw;height:60px;margin:10px 0;'; document.getElementById('column').prepend(wide); })()`);
   wait = await waitFor(laneOf, (l) => l.wide && l.report?.right === l.wide[1], 3000);
   check(wait.ok, 'a wider reply shows up: the lane widens to it', wait.value);
+  // The window is resized: the column moves, and the lane has to move with it.
+  const beforeResize = (await laneOf()).report;
+  await probe.send('Emulation.setDeviceMetricsOverride', { width: 1000, height: 720, deviceScaleFactor: 1, mobile: false });
+  wait = await waitFor(laneOf, (l) => l.report !== null && l.column && l.report.left === l.column[0] && l.report.left !== beforeResize.left, 4000);
+  check(wait.ok && wait.value.report.right === Math.max(wait.value.reply[1], wait.value.wide[1]), `window resized: the lane moved with the column (left ${beforeResize.left} -> ${wait.value.report?.left})`, { beforeResize, now: wait.value });
+  await probe.send('Emulation.clearDeviceMetricsOverride');
+  wait = await waitFor(laneOf, (l) => l.report?.left === beforeResize.left && l.report.right === beforeResize.right, 4000);
+  check(wait.ok, 'window back to its size: the lane is back where it was', { beforeResize, now: wait.value.report });
+  // Another conversation: the app throws the column away and builds a new, narrower one with shorter replies.
+  await evaluate(
+    probe,
+    `(() => { document.getElementById('feed').remove(); const feed = Object.assign(document.createElement('div'), { id: 'feed' }); feed.style.cssText = 'flex:1;min-height:0;overflow-y:auto;';
+      const column = Object.assign(document.createElement('div'), { id: 'column' }); column.style.cssText = 'width:30vw;margin:0 auto;';
+      for (let i = 0; i < 30; i++) { const reply = document.createElement('div'); reply.className = 'reply'; reply.style.cssText = 'width:18vw;height:60px;margin:10px 0;'; column.append(reply); }
+      feed.append(column); document.getElementById('main').prepend(feed); })()`,
+  );
+  wait = await waitFor(laneOf, (l) => l.report !== null && l.column && l.report.left === l.column[0] && l.report.right === l.reply[1], 4000);
+  check(wait.ok && wait.value.report.left !== beforeResize.left, `another conversation with a narrower column: the lane follows it (${beforeResize.left}-${beforeResize.right} -> ${wait.value.report?.left}-${wait.value.report?.right})`, wait.value);
   r = await cli(['apply', '--image', files.cli.path, '--no-daemon'], env);
   wait = await waitFor(laneOf, (l) => l.inImage && l.report === null, 3000);
   await sleep(600);

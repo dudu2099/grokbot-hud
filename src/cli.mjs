@@ -91,9 +91,14 @@ function parseStrengthOption(raw) {
   return value;
 }
 
+// A loopback connect answers at once or is refused at once. The timeout only matters when this process itself is
+// stalled, so it is generous: starting the PowerShell helpers freezes the event loop for most of a second (measured:
+// 714 ms on a busy machine), and 800 ms here used to report a live helper as gone about one time in twelve.
+const PORT_PROBE_TIMEOUT_MS = 3000;
+
 function portListening(port) {
   return new Promise((resolve) => {
-    const socket = connect({ host: HOST, port, timeout: 800 });
+    const socket = connect({ host: HOST, port, timeout: PORT_PROBE_TIMEOUT_MS });
     socket.once('connect', () => {
       socket.destroy();
       resolve(true);
@@ -168,11 +173,12 @@ async function status(args) {
   parseCommandArgs(args, {}, 0);
   const platform = await loadPlatform();
   const store = openPlatformStore(platform);
-  const [appPath, running, identity, owner, autostart, launcher, lastApplied, always, usage] = await Promise.all([
+  // The two network looks go first and alone: run next to the PowerShell helpers below, their short timeouts expire
+  // while this process is busy starting those helpers, and an open port reads as closed.
+  const [identity, owner] = await Promise.all([identifyDebug(PORTS.debug), panelOwner()]);
+  const [appPath, running, autostart, launcher, lastApplied, always, usage] = await Promise.all([
     platform.appPath(),
     platform.running(),
-    identifyDebug(PORTS.debug),
-    panelOwner(),
     platform.autostartInstalled(),
     platform.launcherInstalled(),
     store.readLastApplied(),
