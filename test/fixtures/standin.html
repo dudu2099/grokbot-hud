@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Grok Bot stand-in</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #ffffff; font: 16px system-ui, sans-serif; }
+  .app { display: flex; height: 100vh; }
+  #sidebar { width: 26vw; box-sizing: border-box; background: #1f2430; color: #e6e6e6; }
+  #main { flex: 1; background: #2b303b; color: #f0f0f0; display: flex; flex-direction: column; justify-content: flex-end; }
+  .composer { display: flex; gap: 2vw; padding: 2vw; }
+  #composer { width: 40vw; height: 70vh; background: #ffffff; color: #111111; border: 0; }
+  #send { width: 25vw; height: 70vh; background: #3b82f6; color: #ffffff; border: 0; }
+  #dlg { width: 34vw; height: 55vh; top: 8vh; margin-top: 0; background: #fafafa; border: 0; }
+  .late { position: fixed; left: 30vw; top: 6vh; width: 40vw; height: 60vh; background: #445566; }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" style="padding: 16px">侧栏：大块实心面板</aside>
+    <main id="main">
+      <div class="composer">
+        <textarea id="composer" style="font-size: 14px">输入框不该变透明</textarea>
+        <button id="send">按钮不该变透明</button>
+      </div>
+    </main>
+  </div>
+  <dialog id="dlg" open>对话框不该变透明</dialog>
+</body>
+</html>

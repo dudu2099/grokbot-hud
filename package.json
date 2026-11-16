@@ -1,0 +1,25 @@
+{
+  "name": "grokbot-hud",
+  "version": "0.1.0",
+  "description": "Grok Bot HUD：给官方 Grok Bot 桌面应用换上自己的壁纸，并把用量一直显示在窗口上；不改应用本身，随时能恢复（非官方）",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "grokbot-wallpaper": "scripts/grokbot-wallpaper.mjs"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\"",
+    "e2e": "node scripts/e2e-standin.mjs",
+    "e2e:watch": "node scripts/e2e-watch.mjs",
+    "e2e:autostart": "node scripts/e2e-autostart.mjs",
+    "e2e:custom": "node scripts/e2e-custom.mjs",
+    "e2e:launcher": "node scripts/e2e-launcher.mjs",
+    "e2e:always": "node scripts/e2e-always.mjs",
+    "e2e:usage": "node scripts/e2e-usage.mjs",
+    "placeholders": "node scripts/make-placeholders.mjs",
+    "bench:launch": "node scripts/bench-launch.mjs"
+  }
+}

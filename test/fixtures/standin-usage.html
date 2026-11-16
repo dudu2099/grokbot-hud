@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Grok Bot stand-in (account menu)</title>
+<!-- The light stand-in plus a fake account menu that behaves like the one measured on the real Grok Bot:
+     a button[aria-haspopup="menu"] at the bottom left; a trusted pointer press opens, about 0.25 s later, a [role="menu"]
+     appended to body with 8 [role="menuitem"]s, the first holding two leaves (plan name, "97% 已用"); a trusted Escape closes it
+     and leaves focus on the account button; pressing the button again closes it.
+     The figure comes from ?usage=<text> or window.__standin.usage; null (?usage=none) leaves the item out. -->
+<style>
+  html, body { margin: 0; height: 100%; background: rgb(252, 252, 252); color: rgb(28, 28, 28); font: 15px system-ui, sans-serif; }
+  .app { display: flex; height: 100vh; }
+  #side { position: relative; width: 22vw; box-sizing: border-box; padding: 16px; background: rgb(245, 245, 245); }
+  #main { flex: 1; box-sizing: border-box; padding: 20px; background: rgb(252, 252, 252); display: flex; flex-direction: column; gap: 14px; }
+  #answer { width: 36vw; padding: 12px 14px; border-radius: 14px; background: rgba(28, 28, 28, 0.06); }
+  #other { align-self: flex-start; padding: 6px 12px; border-radius: 8px; border: 1px solid rgb(200, 200, 200); background: rgb(255, 255, 255); }
+  #composerBox { margin-top: auto; width: 42vw; height: 110px; box-sizing: border-box; padding: 10px; border-radius: 16px; background: rgb(255, 255, 255); }
+  #composer { width: 100%; height: 100%; box-sizing: border-box; border: 0; resize: none; background: rgb(255, 255, 255); color: rgb(28, 28, 28); font: inherit; }
+  #rail { width: 26vw; box-sizing: border-box; padding: 16px; background: rgb(252, 252, 252); }
+  #card { width: 21vw; height: 180px; box-sizing: border-box; padding: 12px; border-radius: 12px; background: rgb(255, 255, 255); }
+  #account { position: absolute; left: 16px; bottom: 14px; width: 94px; height: 40px; border-radius: 20px; border: 0; background: rgb(232, 232, 232); font: inherit; }
+  #share { position: absolute; left: 16px; top: 16px; border: 0; background: none; font: inherit; }
+  [role="menu"] { position: fixed; left: 12px; bottom: 62px; width: 240px; padding: 6px; border-radius: 12px; background: rgb(255, 255, 255);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18); display: flex; flex-direction: column; gap: 2px; }
+  [role="menuitem"] { display: flex; justify-content: space-between; padding: 8px 10px; border-radius: 8px; }
+  [role="menuitem"]:focus { outline: none; background: rgb(240, 240, 240); }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside id="side">
+      <button id="share" type="button" aria-haspopup="menu">分享（上面那个带菜单的按钮，不是账户按钮）</button>
+      侧栏（浅灰面板）
+      <button id="account" type="button" aria-haspopup="menu" aria-expanded="false">账户</button>
+    </aside>
+    <main id="main">
+      <div id="answer">回答气泡：底色近乎透明，字直接落在后面的东西上。</div>
+      <button id="other" type="button">页面里别的按钮</button>
+      <div id="composerBox"><textarea id="composer">输入框外面那层白容器要保持实心</textarea></div>
+    </main>
+    <aside id="rail"><section id="card">右侧栏的纯白内卡片</section></aside>
+  </div>
+<script>
+  const param = new URLSearchParams(location.search).get('usage');
+  const standin = (window.__standin = {
+    usage: param === null ? '97% 已用' : param === 'none' ? null : param,
+    presses: 0, opens: 0, closes: 0, expandedChanges: 0, escapes: 0,
+  });
+  const account = document.getElementById('account');
+  let menu = null;
+  let opening = 0;
+  const setExpanded = (value) => {
+    if (account.getAttribute('aria-expanded') !== String(value)) standin.expandedChanges++;
+    account.setAttribute('aria-expanded', String(value));
+  };
+  function close() {
+    clearTimeout(opening);
+    opening = 0;
+    if (!menu) return setExpanded(false);
+    menu.remove();
+    menu = null;
+    standin.closes++;
+    setExpanded(false);
+    account.focus();
+  }
+  function open() {
+    setExpanded(true);
+    opening = setTimeout(() => {
+      opening = 0;
+      menu = document.createElement('div');
+      menu.setAttribute('role', 'menu');
+      const labels = ['设置', '快捷键', '帮助', '更新日志', '下载', '反馈', '退出登录'];
+      if (standin.usage !== null) {
+        const first = document.createElement('div');
+        first.setAttribute('role', 'menuitem');
+        first.tabIndex = -1;
+        const plan = document.createElement('span');
+        plan.textContent = 'Premium';
+        const used = document.createElement('span');
+        used.textContent = standin.usage;
+        first.append(plan, used);
+        menu.append(first);
+      } else labels.push('关于');
+      for (const label of labels) {
+        const item = document.createElement('div');
+        item.setAttribute('role', 'menuitem');
+        item.tabIndex = -1;
+        item.textContent = label;
+        menu.append(item);
+      }
+      document.body.append(menu);
+      standin.opens++;
+      menu.firstElementChild.focus();
+    }, 250);
+  }
+  // Only real input opens it, as with the real menu: a script-made event does nothing here.
+  account.addEventListener('pointerdown', (event) => {
+    if (!event.isTrusted || event.button !== 0) return;
+    standin.presses++;
+    if (menu || opening) close();
+    else open();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (!event.isTrusted || event.key !== 'Escape') return;
+    standin.escapes++;
+    if (menu || opening) close();
+  }, true);
+</script>
+</body>
+</html>

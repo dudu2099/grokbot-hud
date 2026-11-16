@@ -1,0 +1,10 @@
+{
+  "id": "far-star",
+  "name": "远星",
+  "wallpaper": "wallpaper.jpg",
+  "thumb": "thumb.jpg",
+  "opacity": 0.9,
+  "appearance": "dark",
+  "accent": "#9cc4ff",
+  "credit": "AI 生成的原创画面，说明见 themes/README.md"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "night-harbor",
+  "name": "夜港（占位）",
+  "wallpaper": "wallpaper.png",
+  "thumb": "thumb.png",
+  "opacity": 0.9,
+  "appearance": "dark",
+  "accent": "#8ab4ff",
+  "credit": "测试用的占位几何图，由 scripts/make-placeholders.mjs 生成"
+}

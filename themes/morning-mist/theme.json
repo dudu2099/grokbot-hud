@@ -1,0 +1,10 @@
+{
+  "id": "morning-mist",
+  "name": "晨雾",
+  "wallpaper": "wallpaper.jpg",
+  "thumb": "thumb.jpg",
+  "opacity": 0.9,
+  "appearance": "light",
+  "accent": "#d98a4e",
+  "credit": "AI 生成的原创画面，说明见 themes/README.md"
+}

@@ -1,0 +1,9 @@
+node_modules/
+*.tmp
+.e2e-*/
+
+# 真窗口截图里有聊天内容，只留本机
+docs/verify/real-*.png
+
+# 开发过程的流水账，只留本机
+docs/notes.md

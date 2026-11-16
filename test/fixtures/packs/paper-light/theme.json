@@ -1,0 +1,9 @@
+{
+  "id": "paper-light",
+  "name": "素笺（占位）",
+  "wallpaper": "wallpaper.png",
+  "opacity": 0.85,
+  "appearance": "light",
+  "accent": "#b5651d",
+  "credit": "测试用的占位几何图，由 scripts/make-placeholders.mjs 生成"
+}

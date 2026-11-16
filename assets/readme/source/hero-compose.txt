@@ -1,0 +1,10 @@
+头图 = 生成的插画（提示词见 hero-prompt.txt，21:9）+ 叠上去的标题。
+原始插画约 5.5 MB，没有放进仓库。
+
+python scripts/compose_hero.py --image hero-raw.png \
+  --font GochiHand-Regular.ttf --sub-font LXGWWenKai-Regular.ttf \
+  --title "Grok Bot HUD" --subtitle "换上自己的壁纸，用量一直在眼前" \
+  --x 78 --y 168 --size 88 --sub-size 27 --gap 20 \
+  --color "#f4ead2" --sub-color "#c9c6dd" --out hero.webp
+
+字体：Gochi Hand（OFL）、霞鹜文楷 LXGW WenKai（OFL）。

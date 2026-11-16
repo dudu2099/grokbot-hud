@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Grok Bot stand-in (oklch, switches mode on body)</title>
+<!-- Light panels written as oklch(), as some apps' design tokens are. The app switches to dark by a class on <body>,
+     not on the root. #pin is a fixed-position element whose box must not move when the page is flipped. -->
+<style>
+  html, body { margin: 0; height: 100%; font: 15px system-ui, sans-serif; }
+  body { background: oklch(0.99 0 0); color: oklch(0.2 0 0); }
+  .app { display: flex; height: 100vh; }
+  #side { width: 24vw; padding: 16px; box-sizing: border-box; background: oklch(0.97 0 0); }
+  #main { flex: 1; padding: 20px; box-sizing: border-box; background: oklch(0.99 0 0); }
+  #pin { position: fixed; right: 24px; bottom: 30px; width: 180px; height: 40px; background: oklch(0.6 0.15 250); color: #fff; }
+  body.dark { background: oklch(0.18 0 0); color: oklch(0.95 0 0); }
+  body.dark #side { background: oklch(0.22 0 0); }
+  body.dark #main { background: oklch(0.18 0 0); }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside id="side">侧栏：oklch(0.97 0 0)</aside>
+    <main id="main">主区：oklch(0.99 0 0)</main>
+  </div>
+  <div id="pin">固定在右下角</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Grok Bot stand-in (light)</title>
+<!-- Colors measured on the real Grok Bot in light mode: panels 252/245, text 28, inner cards pure white,
+     answer bubbles almost transparent, the user's own bubble solid 28 with white text, the composer frame white around a textarea. -->
+<style>
+  html, body { margin: 0; height: 100%; background: rgb(252, 252, 252); color: rgb(28, 28, 28); font: 15px system-ui, sans-serif; }
+  .app { display: flex; height: 100vh; }
+  #side { width: 22vw; box-sizing: border-box; padding: 16px; background: rgb(245, 245, 245); }
+  #main { flex: 1; box-sizing: border-box; padding: 20px; background: rgb(252, 252, 252); display: flex; flex-direction: column; gap: 14px; }
+  #answer { width: 36vw; padding: 12px 14px; border-radius: 14px; background: rgba(28, 28, 28, 0.06); }
+  #mine { align-self: flex-end; width: 24vw; height: 56px; box-sizing: border-box; padding: 10px 14px; border-radius: 14px; background: rgb(28, 28, 28); color: #ffffff; }
+  #composerBox { margin-top: auto; width: 42vw; height: 110px; box-sizing: border-box; padding: 10px; border-radius: 16px; background: rgb(255, 255, 255); }
+  #composer { width: 100%; height: 100%; box-sizing: border-box; border: 0; resize: none; background: rgb(255, 255, 255); color: rgb(28, 28, 28); font: inherit; }
+  #rail { width: 26vw; box-sizing: border-box; padding: 16px; background: rgb(252, 252, 252); display: flex; flex-direction: column; gap: 12px; }
+  #card { width: 21vw; height: 180px; box-sizing: border-box; padding: 12px; border-radius: 12px; background: rgb(255, 255, 255); }
+  #cardInner { width: 16vw; height: 60px; margin-top: 10px; border-radius: 8px; background: rgb(255, 255, 255); }
+  #card2 { width: 21vw; height: 90px; box-sizing: border-box; padding: 12px; border-radius: 12px; background: rgb(255, 255, 255); }
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside id="side">侧栏（浅灰面板）</aside>
+    <main id="main">
+      <div id="answer">回答气泡：底色近乎透明，字直接落在后面的东西上。</div>
+      <div id="mine">用户自己的深色气泡，白字</div>
+      <div id="composerBox"><textarea id="composer">输入框外面那层白容器要保持实心</textarea></div>
+    </main>
+    <aside id="rail">
+      <section id="card">右侧栏的纯白内卡片<div id="cardInner"></div></section>
+      <section id="card2">第二块纯白卡片</section>
+    </aside>
+  </div>
+</body>
+</html>

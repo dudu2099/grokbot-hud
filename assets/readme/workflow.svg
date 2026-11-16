@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400" role="img" aria-labelledby="t d">
+  <title id="t">Grok Bot HUD 怎么工作</title>
+  <desc id="d">三步：从带壁纸的图标打开 Grok Bot，它带着本机调试口启动；工具在窗口后面垫一层壁纸并把面板变透明；后台小助手守着，刷新后重新放上壁纸，并读出用量显示在小圆点上。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1.5 L8.5 5 L1 8.5" fill="none" stroke="#8f8cb0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <clipPath id="pic"><rect x="-70" y="-52" width="140" height="96" rx="12"/></clipPath>
+  </defs>
+
+  <rect width="1200" height="400" rx="22" fill="#1b1a36"/>
+
+  <!-- soft offset grounds behind each object -->
+  <g fill="#f4ead2" opacity="0.055">
+    <path d="M118 96 C170 58 268 62 304 112 C338 160 318 226 262 244 C204 262 128 250 104 200 C86 162 92 116 118 96 Z"/>
+    <path d="M498 88 C566 54 676 66 712 118 C744 166 720 232 656 248 C590 264 506 250 482 196 C464 154 470 104 498 88 Z"/>
+    <path d="M898 94 C956 58 1052 66 1086 118 C1116 166 1098 228 1040 246 C980 262 904 250 880 198 C862 158 870 112 898 94 Z"/>
+  </g>
+
+  <!-- quiet connectors -->
+  <g fill="none" stroke="#8f8cb0" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)">
+    <path d="M318 150 C366 128 428 128 474 148"/>
+    <path d="M722 150 C770 128 826 128 872 148"/>
+  </g>
+
+  <!-- 1 the icon you open it from -->
+  <g transform="translate(210 152)">
+    <rect x="-52" y="-52" width="104" height="104" rx="26" fill="#23224a" stroke="#f4ead2" stroke-width="3"/>
+    <circle cx="0" cy="-4" r="24" fill="none" stroke="#6fb3ab" stroke-width="3"/>
+    <circle cx="8" cy="-10" r="7" fill="#f4ead2"/>
+    <path d="M-30 30 H30" stroke="#f4ead2" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+    <path d="M34 34 L52 52 M52 38 V52 H38" fill="none" stroke="#f4ead2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- 2 a picture slipped behind the window -->
+  <g transform="translate(596 152)">
+    <g transform="translate(22 -14)">
+      <rect x="-70" y="-52" width="140" height="96" rx="12" fill="#2c3a5e"/>
+      <g clip-path="url(#pic)">
+        <circle cx="34" cy="-18" r="17" fill="#f4ead2" opacity="0.9"/>
+        <path d="M-70 44 L-28 -2 L4 26 L30 6 L70 44 Z" fill="#6fb3ab" opacity="0.85"/>
+      </g>
+      <rect x="-70" y="-52" width="140" height="96" rx="12" fill="none" stroke="#6fb3ab" stroke-width="3"/>
+    </g>
+    <g transform="translate(-14 12)">
+      <rect x="-70" y="-48" width="140" height="96" rx="12" fill="#1b1a36" fill-opacity="0.42" stroke="#f4ead2" stroke-width="3"/>
+      <path d="M-70 -24 H70" stroke="#f4ead2" stroke-width="2" opacity="0.6"/>
+      <circle cx="-54" cy="-36" r="3.5" fill="#f4ead2"/><circle cx="-42" cy="-36" r="3.5" fill="#f4ead2" opacity="0.7"/><circle cx="-30" cy="-36" r="3.5" fill="#f4ead2" opacity="0.45"/>
+      <path d="M-50 -4 H24 M-50 12 H44 M-50 28 H4" stroke="#f4ead2" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+    </g>
+  </g>
+
+  <!-- 3 the ring that keeps the figure in sight: the only amber in the picture -->
+  <g transform="translate(990 150)">
+    <circle r="46" fill="#23224a" stroke="#f4ead2" stroke-width="3"/>
+    <circle r="30" fill="none" stroke="#f4ead2" stroke-opacity="0.22" stroke-width="8"/>
+    <circle r="30" fill="none" stroke="#f2a33a" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="82 100" transform="rotate(-90)"/>
+    <rect x="18" y="26" width="60" height="30" rx="15" fill="#f2a33a" stroke="#1b1a36" stroke-width="4"/>
+    <path d="M32 41 H64" stroke="#1b1a36" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <g font-family="KaiTi, 'Kaiti SC', STKaiti, 'LXGW WenKai', serif" text-anchor="middle">
+    <g fill="#f4ead2" font-size="29">
+      <text x="210" y="300">从带壁纸的图标打开</text>
+      <text x="600" y="300">在窗口后面垫一层</text>
+      <text x="990" y="300">小助手在后台守着</text>
+    </g>
+    <g fill="#b3b0cf" font-size="21">
+      <text x="210" y="338">Grok Bot 带着本机调试口启动</text>
+      <text x="600" y="338">面板变透明，画就透出来</text>
+      <text x="990" y="338">刷新后重放，顺手读出用量</text>
+    </g>
+  </g>
+</svg>
